@@ -14,5 +14,5 @@ npm install
 ## Run
 
 ```bash
-npm run build
+parcel index.html
 ```

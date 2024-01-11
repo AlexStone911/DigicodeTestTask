@@ -5,13 +5,12 @@
 	"description": "Test task for Digicode ",
 	"main": "index.html",
 	"scripts": {
-		"build": "parcel index.html",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"author": "Pidhorodetskiy Oleksandr",
 	"license": "ISC",
 	"dependencies": {
-		"@pixi/graphics-extras": "7.1.4",
+		"@pixi/graphics-extras": "^7.1.4",
 		"pixi.js": "^7.3.3"
 	},
 	"devDependencies": {
