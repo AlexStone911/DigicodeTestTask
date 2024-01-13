@@ -137,9 +137,9 @@ table {
 	justify-content: center;
 }
 
-.info,
-.settings {
+.info {
 	display: flex;
+	margin: 0.5rem;
 }
 
 .info-item,
@@ -149,5 +149,19 @@ table {
 }
 
 .settings {
+	display: flex;
 	justify-content: center;
+	margin: 0.5rem;
+}
+
+@media screen and (max-width: 400px) {
+	.settings {
+		flex-direction: column;
+		justify-content: center;
+	}
+
+	.setting {
+		text-align: center;
+		margin: 0.2rem;
+	}
 }

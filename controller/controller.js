@@ -21,9 +21,13 @@ export class Controller {
 
 		this.app.stage.addChild(bg);
 
-		bg.on("click", (e) => {
+		bg.on("pointertap", (e) => {
 			this.run(this.gravitySpeed, e.clientX, e.clientY);
 		});
+
+		// bg.on("pointertap", (e) => {
+		// 	this.run(this.gravitySpeed, e.clientX, e.clientY);
+		// });
 	}
 
 	run(gravitySpeed, x, y) {
@@ -37,7 +41,7 @@ export class Controller {
 		);
 
 		// Remove figure from the screen after click on it
-		figure.on("click", () => {
+		figure.on("pointertap", () => {
 			this.model.removeShapeFromArray(figure);
 			this.view.removeShape(figure);
 			this.view.updateHeaderMetrics(
