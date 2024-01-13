@@ -1,9 +1,8 @@
-import { Graphics } from '@pixi/graphics';
+// import { Graphics } from '@pixi/graphics';
 import * as PIXI from "pixi.js"
-
 import '@pixi/graphics-extras';
-
-export class ThreeSides {
+import { random } from "../utils/random";
+class BaseFigure {
     constructor(app, xPosition, yPosition, color, shapeScale){
         this.app = app;
         this.xPosition = xPosition;
@@ -13,165 +12,106 @@ export class ThreeSides {
     }
 
     create() {
-        const shape = new PIXI.Graphics();
+        this.shape = new PIXI.Graphics();
+        this.shape.beginFill(this.color);
+        this.drawFigure();
+        this.shape.endFill();
 
-        shape.x = this.xPosition;
-        shape.y = this.yPosition || -this.shapeScale*2;
-        shape.beginFill(this.color);
-        shape.moveTo(this.shapeScale*2, 0);
-        shape.lineTo(this.shapeScale, this.shapeScale*2); 
-        shape.lineTo(0, 0);
-        shape.lineTo(this.shapeScale, 0);
-        
-        shape.endFill();
-
-        return [shape, this.getArea()];
-    }
-
-    getArea() {
-        return (Math.sqrt(3) / 4) * Math.pow(this.shapeScale*2, 2);
+        return [this.shape, this.getFigureArea()];
     }
 }
 
-export class FourSides {
+export class ThreeSides extends BaseFigure {
     constructor(app, xPosition, yPosition, color, shapeScale){
-        this.app = app;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.color = color;
-        this.shapeScale = shapeScale;
+        super(app, xPosition, yPosition, color, shapeScale);
+        this.doubledScale = this.shapeScale * 2;
+    }
+
+    drawFigure() {
+        this.shape.x = this.xPosition;
+        this.shape.y = this.yPosition || -this.doubledScale;
+        this.shape.moveTo(this.doubledScale, 0);
+        this.shape.lineTo(this.shapeScale, this.doubledScale); 
+        this.shape.lineTo(0, 0);
+        this.shape.lineTo(this.shapeScale, 0);
+    }
+
+    getFigureArea() {
+        return (Math.sqrt(3) / 4) * Math.pow(this.doubledScale, 2);
+    }
+}
+
+export class Square extends BaseFigure {
+    constructor(app, xPosition, yPosition, color, shapeScale){
+        super(app, xPosition, yPosition, color, shapeScale);
         this.sideLength = shapeScale * 2;
     }
-    create() {
-        const shape = new PIXI.Graphics();
-        shape.beginFill(this.color);
-        shape.drawRect(this.xPosition, this.yPosition || -this.shapeScale, this.sideLength, this.sideLength);
-        shape.endFill();
 
-        return [shape, this.getArea()];
+    drawFigure() {
+        this.shape.drawRect(this.xPosition, this.yPosition || -this.sideLength, this.sideLength, this.sideLength);
     }
 
-    getArea() {
+    getFigureArea() {
         return this.sideLength * this.sideLength;
     }
 }
 
-export class FiveSides {
+export class Polygon extends BaseFigure {
     constructor(app, xPosition, yPosition, color, shapeScale){
-        this.app = app;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.color = color;
-        this.shapeScale = shapeScale;
+        super(app, xPosition, yPosition, color, shapeScale);
+        this.quantityOfSides = random(5, 7);
     }
 
-    create() {
-        const shape = new Graphics();
-        shape.lineStyle(0);
-        shape.beginFill(this.color);
-        shape.drawRegularPolygon(this.xPosition, this.yPosition || -this.shapeScale, this.shapeScale * 1.2, 5);
-        shape.endFill();
-
-        return [shape, this.getArea()];
+    drawFigure() {
+        this.shape.drawRegularPolygon(this.xPosition, this.yPosition || -this.shapeScale, this.shapeScale, this.quantityOfSides);
     }
 
-    getArea() {
-        return (Math.pow(this.shapeScale, 2) * 5) / (4 * Math.tan(Math.PI / 5))
+    getFigureArea() {
+        return (Math.pow(this.shapeScale, 2) * this.quantityOfSides) / (4 * Math.tan(Math.PI / this.quantityOfSides))
     }
 }
 
-export class SixSides {
+export class Circle extends BaseFigure {
     constructor(app, xPosition, yPosition, color, shapeScale){
-        this.app = app;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.color = color;
-        this.shapeScale = shapeScale;
+        super(app, xPosition, yPosition, color, shapeScale);
     }
 
-    create() {
-        const shape = new Graphics();
-        shape.lineStyle(0);
-        shape.beginFill(this.color);
-        shape.drawRegularPolygon(this.xPosition, this.yPosition || -this.shapeScale, this.shapeScale * 1.2, 6);
-        shape.endFill();
-
-        return [shape, this.getArea()];
+    drawFigure() {
+        this.shape.drawCircle(0, 0, this.shapeScale);
+        this.shape.x = this.xPosition;
+        this.shape.y = this.yPosition || -this.shapeScale;
     }
 
-    getArea() {
-        return (Math.pow(this.shapeScale, 2) * 6) / (4 * Math.tan(Math.PI / 6))
-    }
-}
-
-export class Circle {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        this.app = app;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.color = color;
-        this.shapeScale = shapeScale;
-    }
-
-    create() {
-        const shape = new PIXI.Graphics();
-        shape.beginFill(this.color);
-        shape.drawCircle(0, 0, this.shapeScale);
-        shape.x = this.xPosition;
-        shape.y = this.yPosition || -this.shapeScale;
-        shape.endFill();
-
-        return [shape, this.getArea()];
-    }
-
-    getArea() {
+    getFigureArea() {
         return Math.PI * Math.pow(this.shapeScale, 2);
     }
 }
 
-export class Ellipse {
+export class Ellipse extends BaseFigure {
     constructor(app, xPosition, yPosition, color, shapeScale){
-        this.app = app;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.color = color;
-        this.shapeScale = shapeScale;
+        super(app, xPosition, yPosition, color, shapeScale);
         this.width = this.shapeScale * 2;
     }
 
-    create() {
-        const shape = new PIXI.Graphics();
-        shape.beginFill(this.color, 1);
-        shape.drawEllipse(this.xPosition, this.yPosition || -this.shapeScale, this.shapeScale * 2, this.shapeScale);
-        shape.endFill();
-
-        return [shape, this.getArea()];
+    drawFigure() {
+        this.shape.drawEllipse(this.xPosition, this.yPosition || -this.shapeScale, this.width, this.shapeScale);
     }
 
-    getArea() {
+    getFigureArea() {
         return Math.PI * this.width * this.shapeScale;
     }
 }
 
-export class Star {
+export class Star extends BaseFigure {
     constructor(app, xPosition, yPosition, color, shapeScale){
-        this.app = app;
-        this.xPosition = xPosition;
-        this.yPosition = yPosition;
-        this.color = color;
-        this.shapeScale = shapeScale;
+        super(app, xPosition, yPosition, color, shapeScale);
     }
 
-    create() {
-        const shape = new Graphics();
-        shape.lineStyle(this.color);
-        shape.beginFill(this.color, 1);
-        shape.drawStar(this.xPosition, this.yPosition || -this.shapeScale, 5, this.shapeScale * 1.2);
-        shape.endFill();
-        return [shape, this.getArea()];
+    drawFigure() {
+        this.shape.drawStar(this.xPosition, this.yPosition || -this.shapeScale, 5, this.shapeScale);
     }
 
-    getArea() {
+    getFigureArea() {
         // TODO: To say the truth, have not found the right way how to calculate the are of the star,
         // therefore added TODO label and fix this later! ;-)
         return 1500;

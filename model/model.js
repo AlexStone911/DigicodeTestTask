@@ -1,12 +1,12 @@
 import { random } from "../utils/random";
-import { ThreeSides, FourSides, FiveSides, SixSides, Circle, Ellipse, Star } from "./shapes";
+import { ThreeSides, Square, Polygon, Circle, Ellipse, Star } from "./shapes";
 
 export class Model {
     constructor(app) {
         this.app = app;
         this.shapes = [];
         this.shapesOccupiedArea = [];
-        this.appWidth = this.app.renderer.options.width*2;
+        this.appWidth = this.app.renderer.options.width * 2;
         this.shapeScale = 30;
         this.shapeColors = [
             "#00FFFF",
@@ -24,9 +24,8 @@ export class Model {
         ];
         this.shapeClasses = [
             ThreeSides,
-            FourSides,
-            FiveSides,
-            SixSides,
+            Square,
+            Polygon,
             Circle,
             Ellipse,
             Star
@@ -47,7 +46,7 @@ export class Model {
         return newShape;
     }
 
-    removeShape(shapeToRemove) {
+    removeShapeFromArray(shapeToRemove) {
         const shapeIndex = this.shapes.findIndex(shape => shape.id === shapeToRemove.id);
         this.shapes.splice(shapeIndex, 1);
         this.shapesOccupiedArea.splice(shapeIndex, 1);
@@ -57,7 +56,7 @@ export class Model {
         this.shapes
             .filter(shape =>  shape.y >= canvas.height)
             .forEach((shape) => {
-                this.removeShape(shape);
+                this.removeShapeFromArray(shape);
             });
     }
 
