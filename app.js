@@ -27,6 +27,9 @@ const view = new View(app);
 const model = new Model(app);
 const controller = new Controller(view, model, app, gravitySpeed);
 
+controller.createSpriteBackground();
+controller.addNewElementListener();
+
 function startApplicatonLoop() {
     controller.run(gravitySpeed);
     window.setTimeout(startApplicatonLoop, generationSpeed);
