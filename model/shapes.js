@@ -3,12 +3,12 @@ import * as PIXI from "pixi.js"
 import '@pixi/graphics-extras';
 import { random } from "../utils/random";
 class BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
+    constructor(app, xPosition, yPosition, color, scale){
         this.app = app;
         this.xPosition = xPosition;
         this.yPosition = yPosition;
         this.color = color;
-        this.shapeScale = shapeScale;
+        this.scale = scale;
     }
 
     create() {
@@ -22,18 +22,18 @@ class BaseFigure {
 }
 
 export class ThreeSides extends BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        super(app, xPosition, yPosition, color, shapeScale);
-        this.doubledScale = this.shapeScale * 2;
+    constructor(app, xPosition, yPosition, color, scale){
+        super(app, xPosition, yPosition, color, scale);
+        this.doubledScale = this.scale * 2;
     }
 
     drawFigure() {
         this.shape.x = this.xPosition;
         this.shape.y = this.yPosition || -this.doubledScale;
         this.shape.moveTo(this.doubledScale, 0);
-        this.shape.lineTo(this.shapeScale, this.doubledScale); 
+        this.shape.lineTo(this.scale, this.doubledScale); 
         this.shape.lineTo(0, 0);
-        this.shape.lineTo(this.shapeScale, 0);
+        this.shape.lineTo(this.scale, 0);
     }
 
     getFigureArea() {
@@ -42,9 +42,9 @@ export class ThreeSides extends BaseFigure {
 }
 
 export class Square extends BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        super(app, xPosition, yPosition, color, shapeScale);
-        this.sideLength = shapeScale * 2;
+    constructor(app, xPosition, yPosition, color, scale){
+        super(app, xPosition, yPosition, color, scale);
+        this.sideLength = scale * 2;
     }
 
     drawFigure() {
@@ -57,58 +57,58 @@ export class Square extends BaseFigure {
 }
 
 export class Polygon extends BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        super(app, xPosition, yPosition, color, shapeScale);
+    constructor(app, xPosition, yPosition, color, scale){
+        super(app, xPosition, yPosition, color, scale);
         this.quantityOfSides = random(5, 7);
     }
 
     drawFigure() {
-        this.shape.drawRegularPolygon(this.xPosition, this.yPosition || -this.shapeScale, this.shapeScale, this.quantityOfSides);
+        this.shape.drawRegularPolygon(this.xPosition, this.yPosition || -this.scale, this.scale, this.quantityOfSides);
     }
 
     getFigureArea() {
-        return (Math.pow(this.shapeScale, 2) * this.quantityOfSides) / (4 * Math.tan(Math.PI / this.quantityOfSides))
+        return (Math.pow(this.scale, 2) * this.quantityOfSides) / (4 * Math.tan(Math.PI / this.quantityOfSides))
     }
 }
 
 export class Circle extends BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        super(app, xPosition, yPosition, color, shapeScale);
+    constructor(app, xPosition, yPosition, color, scale){
+        super(app, xPosition, yPosition, color, scale);
     }
 
     drawFigure() {
-        this.shape.drawCircle(0, 0, this.shapeScale);
+        this.shape.drawCircle(0, 0, this.scale);
         this.shape.x = this.xPosition;
-        this.shape.y = this.yPosition || -this.shapeScale;
+        this.shape.y = this.yPosition || -this.scale;
     }
 
     getFigureArea() {
-        return Math.PI * Math.pow(this.shapeScale, 2);
+        return Math.PI * Math.pow(this.scale, 2);
     }
 }
 
 export class Ellipse extends BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        super(app, xPosition, yPosition, color, shapeScale);
-        this.width = this.shapeScale * 2;
+    constructor(app, xPosition, yPosition, color, scale){
+        super(app, xPosition, yPosition, color, scale);
+        this.width = this.scale * 2;
     }
 
     drawFigure() {
-        this.shape.drawEllipse(this.xPosition, this.yPosition || -this.shapeScale, this.width, this.shapeScale);
+        this.shape.drawEllipse(this.xPosition, this.yPosition || -this.scale, this.width, this.scale);
     }
 
     getFigureArea() {
-        return Math.PI * this.width * this.shapeScale;
+        return Math.PI * this.width * this.scale;
     }
 }
 
 export class Star extends BaseFigure {
-    constructor(app, xPosition, yPosition, color, shapeScale){
-        super(app, xPosition, yPosition, color, shapeScale);
+    constructor(app, xPosition, yPosition, color, scale){
+        super(app, xPosition, yPosition, color, scale);
     }
 
     drawFigure() {
-        this.shape.drawStar(this.xPosition, this.yPosition || -this.shapeScale, 5, this.shapeScale);
+        this.shape.drawStar(this.xPosition, this.yPosition || -this.scale, 5, this.scale);
     }
 
     getFigureArea() {
