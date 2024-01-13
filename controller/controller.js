@@ -10,10 +10,10 @@ export class Controller {
 			width: this.model.app.view.width,
 			height: this.model.app.view.height,
 		};
-		this.addNewElementListener(gravitySpeed);
+		this.addNewElementListener();
 	}
 
-	addNewElementListener(gravitySpeed) {
+	addNewElementListener() {
 		let bg = new Sprite();
 		bg.width = this.app.screen.width;
 		bg.height = this.app.screen.height;
@@ -22,13 +22,14 @@ export class Controller {
 		this.app.stage.addChild(bg);
 
 		bg.on("click", (e) => {
-			this.run(gravitySpeed, e.clientX, e.clientY);
+			this.run(this.gravitySpeed, e.clientX, e.clientY);
 		});
 	}
 
 	run(gravitySpeed, x, y) {
+		this.gravitySpeed = gravitySpeed;
 		let figure = this.model.addShape(x, y);
-		this.view.renderShape(figure, gravitySpeed);
+		this.view.renderShape(figure, this.gravitySpeed);
 		this.model.removeFinishedShapes(this.canvasSize);
 		this.view.updateHeaderMetrics(
 			this.model.numberOfShapes,

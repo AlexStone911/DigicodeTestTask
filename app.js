@@ -32,4 +32,4 @@ function startApplicatonLoop() {
     window.setTimeout(startApplicatonLoop, generationSpeed);
 }
 
-startApplicatonLoop(gravitySpeed);
+startApplicatonLoop();
