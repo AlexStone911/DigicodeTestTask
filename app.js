@@ -31,7 +31,8 @@ controller.createSpriteBackground();
 controller.addNewElementListener();
 
 function startApplicatonLoop() {
-    controller.run(gravitySpeed);
+    controller.gravitySpeed = gravitySpeed;
+    controller.run();
     window.setTimeout(startApplicatonLoop, generationSpeed);
 }
 

@@ -14,7 +14,7 @@ export class Controller {
 
 	addNewElementListener() {
 		this.bg.on("pointertap", (e) => {
-			this.run(this.gravitySpeed, e.clientX, e.clientY);
+			this.run(e.clientX, e.clientY);
 		});
 	}
 
@@ -27,17 +27,7 @@ export class Controller {
 		this.app.stage.addChild(this.bg);
 	}
 
-	run(gravitySpeed, x, y) {
-		this.gravitySpeed = gravitySpeed;
-		let figure = this.model.addShape(x, y);
-		this.view.renderShape(figure, this.gravitySpeed);
-		this.model.removeFinishedShapes(this.canvasSize);
-		this.view.updateHeaderMetrics(
-			this.model.numberOfShapes,
-			this.model.occupiedArea
-		);
-
-		// Remove figure from the screen after click on it
+	removeShapeListener(figure) {
 		figure.on("pointertap", () => {
 			this.model.removeShapeFromArray(figure);
 			this.view.removeShape(figure);
@@ -46,5 +36,22 @@ export class Controller {
 				this.model.occupiedArea
 			);
 		});
+	}
+
+	addShapeToCanvas(x, y) {
+		this.figure = this.model.addShape(x, y);
+		this.view.renderShape(this.figure, this.gravitySpeed);
+	}
+
+	run(x, y) {
+		this.addShapeToCanvas(x, y);
+		
+		this.model.removeFinishedShapes(this.canvasSize);
+		this.view.updateHeaderMetrics(
+			this.model.numberOfShapes,
+			this.model.occupiedArea
+		);
+
+		this.removeShapeListener(this.figure);
 	}
 }

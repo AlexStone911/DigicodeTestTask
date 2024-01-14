@@ -54,7 +54,7 @@ export class Model {
 
     removeFinishedShapes(canvas) {
         this.shapes
-            .filter(shape =>  shape.y + shape.scale >= canvas.height)
+            .filter(shape => (shape.y + shape.scale) >= canvas.height)
             .forEach((shape) => {
                 this.removeShapeFromArray(shape);
                 this.app.stage.removeChild(shape);
