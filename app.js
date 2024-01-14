@@ -23,6 +23,10 @@ genGravityHTML.addEventListener('change', (e) => {
     gravitySpeed = e.target.value / 10;
 });
 
+window.addEventListener("resize", () => {
+    app.renderer.resize(window.innerWidth, window.innerHeight*0.6);
+});
+
 const view = new View(app);
 const model = new Model(app);
 const controller = new Controller(view, model, app, gravitySpeed);

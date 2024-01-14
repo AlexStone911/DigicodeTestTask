@@ -6,7 +6,6 @@ export class Model {
         this.app = app;
         this.shapes = [];
         this.shapesOccupiedArea = [];
-        this.appWidth = this.app.renderer.options.width * 2;
         this.shapeScale = 30;
         this.shapeColors = [
             "#00FFFF",
@@ -35,7 +34,7 @@ export class Model {
     addShape(x, y) {
         const ShapeClass = this.shapeClasses[random(0, this.shapeClasses.length)];
         const shapeColor = this.shapeColors[random(0, this.shapeColors.length)];
-        const xPosition = x || random(0, this.appWidth);
+        const xPosition = x || random(0, window.innerWidth);
         const yPosition = y;
 
         const [newShape, newShapeArea] = new ShapeClass(this.app, xPosition, yPosition, shapeColor, this.shapeScale).create();
@@ -52,9 +51,9 @@ export class Model {
         this.shapesOccupiedArea.splice(shapeIndex, 1);
     }
 
-    removeFinishedShapes(canvas) {
+    removeFinishedShapes(height) {
         this.shapes
-            .filter(shape => (shape.y + shape.scale) >= canvas.height)
+            .filter(shape => (shape.y - this.shapeScale) >= height)
             .forEach((shape) => {
                 this.removeShapeFromArray(shape);
                 this.app.stage.removeChild(shape);

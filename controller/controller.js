@@ -6,10 +6,6 @@ export class Controller {
 		this.model = model;
 		this.app = app;
 		this.gravitySpeed = gravitySpeed;
-		this.canvasSize = {
-			width: this.model.app.view.width,
-			height: this.model.app.view.height,
-		};
 	}
 
 	addNewElementListener() {
@@ -20,10 +16,9 @@ export class Controller {
 
 	createSpriteBackground() {
 		this.bg = new Sprite();
-		this.bg.width = this.app.screen.width;
-		this.bg.height = this.app.screen.height;
+		this.bg.width = window.innerWidth;
+		this.bg.height = window.innerHeight*0.6;
 		this.bg.interactive = true;
-
 		this.app.stage.addChild(this.bg);
 	}
 
@@ -45,8 +40,8 @@ export class Controller {
 
 	run(x, y) {
 		this.addShapeToCanvas(x, y);
-		
-		this.model.removeFinishedShapes(this.canvasSize);
+
+		this.model.removeFinishedShapes(this.bg.height);
 		this.view.updateHeaderMetrics(
 			this.model.numberOfShapes,
 			this.model.occupiedArea
